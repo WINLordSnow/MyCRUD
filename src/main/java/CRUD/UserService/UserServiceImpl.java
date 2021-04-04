@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -36,5 +37,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(int id) {
         userDao.deleteUser(id);
+    }
+
+    @Transactional
+    @Override
+    public List<User> getAllUsers() {
+        return userDao.getAllUsers();
     }
 }

@@ -18,4 +18,14 @@ public class User {
         this.name = name;
         this.lastName = lastName;
     }
+
+    @Override
+    public String toString() {
+        return new StringBuilder()
+                .append(id)
+                .append(". ")
+                .append(name)
+                .append(" ")
+                .append(lastName).toString();
+    }
 }

@@ -4,6 +4,7 @@ import CRUD.UserService.UserService;
 import CRUD.UserService.UserServiceImpl;
 import CRUD.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -25,14 +26,11 @@ public class RootConfig extends WebMvcConfigurationSupport {
     @Autowired
     private Environment env;
 
+
     @Bean
-    List<User> workUsers() {
-        List<User> list = new ArrayList<>();
-        list.add(new User("Yakov", "Marushchak"));
-        list.add(new User("Marina", "Marushchak"));
-        list.add(new User("Alex", "Marushchak"));
-        list.add(new User("Arina", "Marushchak"));
-        return list;
+    //@Scope("prototype")
+    List<User> workUsers(UserService userService) {
+        return userService.getAllUsers();
     }
 
     @Bean
