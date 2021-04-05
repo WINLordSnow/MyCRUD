@@ -12,6 +12,9 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
 @Configuration
 @EnableWebMvc
 @ComponentScan(value = "CRUD", basePackageClasses = RootConfig.class, useDefaultFilters = false, includeFilters = {@ ComponentScan.Filter (Controller.class)})
@@ -29,6 +32,7 @@ public class WebConfig implements WebMvcConfigurer {
         resolver.setApplicationContext(applicationContext);
         resolver.setPrefix("/WEB-INF/view/");
         resolver.setSuffix(".html");
+        resolver.setCharacterEncoding("UTF-8");
         return resolver;
     }
 

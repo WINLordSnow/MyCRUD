@@ -12,7 +12,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/")
-public class UserController implements IGTVGController{
+public class UserController {
     @Autowired
     @Qualifier("userService")
     private UserService userService;
