@@ -66,6 +66,11 @@
             <version>4.0.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>MyCRUD</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 
@@ -79,7 +84,7 @@
                     <version>2.4</version>
                     <configuration>
                         <warSourceDirectory>src/webapp</warSourceDirectory>
-                        <warName>my_crud</warName>
+                        <warName>MyCRUD</warName>
                         <failOnMissingWebXml>false</failOnMissingWebXml>
                     </configuration>
                 </plugin>

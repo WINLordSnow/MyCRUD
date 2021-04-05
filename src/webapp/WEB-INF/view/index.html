@@ -1,10 +1,34 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:th1="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Users</title>
 </head>
 <body>
-All Hi
+<div th1:switch="${users}">
+    <h2 th1:case="null">No users found!!!</h2>>
+    <div th1:case="*">
+        <h2>Users</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Last Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th1:each="user : ${users}">
+                <td th1:text="${user.getId()}"></td>
+                <td th1:text="${user.getName()}"></td>
+                <td th1:text="${user.getLastName()}"></td>
+                <td><a th1:href="@{updateUser/{id}(id=${user.getId()})}">Edit</a></td>
+                <td><a th1:href="@{deleteUser/{id}(id=${user.getId()})}">Delete</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p><a href="/addUser">Add user</a></p>
+</div>
 </body>
 </html>

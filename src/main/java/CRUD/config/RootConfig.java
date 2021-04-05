@@ -3,6 +3,7 @@ package CRUD.config;
 import CRUD.UserService.UserService;
 import CRUD.UserService.UserServiceImpl;
 import CRUD.model.User;
+import org.hibernate.annotations.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
@@ -10,6 +11,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
@@ -21,7 +23,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @PropertySource("classpath:db.properties")
-@ComponentScan("CRUD")
+@ComponentScan(value = "CRUD",excludeFilters = {@ ComponentScan.Filter (Controller.class)})
 public class RootConfig extends WebMvcConfigurationSupport {
     @Autowired
     private Environment env;
