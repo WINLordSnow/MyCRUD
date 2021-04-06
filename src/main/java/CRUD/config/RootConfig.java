@@ -1,23 +1,22 @@
 package CRUD.config;
 
 import CRUD.UserService.UserService;
-import CRUD.UserService.UserServiceImpl;
 import CRUD.model.User;
-import org.hibernate.annotations.Filter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
+import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 
 @Configuration
@@ -25,12 +24,15 @@ import java.util.Properties;
 @PropertySource("classpath:db.properties")
 @ComponentScan(value = "CRUD",excludeFilters = {@ ComponentScan.Filter (Controller.class)})
 public class RootConfig extends WebMvcConfigurationSupport {
-    @Autowired
-    private Environment env;
+    private final Environment env;
+
+    public RootConfig(@NotNull Environment env) {
+        this.env = env;
+    }
 
 
     @Bean
-    //@Scope("prototype")
+    @Scope("prototype")
     List<User> workUsers(UserService userService) {
         return userService.getAllUsers();
     }
@@ -38,11 +40,27 @@ public class RootConfig extends WebMvcConfigurationSupport {
     @Bean
     DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(env.getProperty("db.driver"));
+        dataSource.setDriverClassName(Objects.requireNonNull(env.getProperty("db.driver")));
         dataSource.setUrl(env.getProperty("db.url"));
         dataSource.setUsername(env.getProperty("db.username"));
         dataSource.setPassword(env.getProperty("db.password"));
         return dataSource;
+    }
+
+    @Bean
+    HibernateJpaVendorAdapter getJpaVendorAdapter() {
+        HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
+        adapter.setGenerateDdl(true);
+        adapter.setShowSql(false);
+        return adapter;
+    }
+
+    @Bean(name = "emf")
+    LocalContainerEntityManagerFactoryBean getEntityManager() {
+        LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
+        emf.setDataSource(getDataSource());
+        emf.setJpaVendorAdapter(getJpaVendorAdapter());
+        return emf;
     }
 
     @Bean
@@ -60,9 +78,9 @@ public class RootConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    HibernateTransactionManager getTransactionManager() {
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(getSessionFactory().getObject());
+    JpaTransactionManager getTransactionManager() {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(getEntityManager().getObject());
         return transactionManager;
     }
 

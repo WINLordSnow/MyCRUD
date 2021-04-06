@@ -2,7 +2,7 @@ package CRUD.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class WebAppInitialiser extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class WebAppInit extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     // Метод, указывающий на класс конфигурации
     @Override

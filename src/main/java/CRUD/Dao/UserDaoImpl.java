@@ -4,40 +4,46 @@ import CRUD.model.User;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 import java.util.List;
 
+@Transactional
 @Repository("userDao")
 public class UserDaoImpl implements UserDao {
-    @Autowired
-    private SessionFactory sessionFactory;
+
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public void setUser(User user) {
-        sessionFactory.getCurrentSession().save(user);
+        em.persist(user);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public User getUser(long id) {
-        return sessionFactory.getCurrentSession().get(User.class, id);
+        TypedQuery<User> query = em.createQuery("select u from User u where u.id = :id", User.class);
+        query.setParameter("id", id);
+        return query.getSingleResult();
     }
 
     @Override
     public void updateUser(User user) {
-        sessionFactory.getCurrentSession().update(user);
+        em.persist(user);
     }
 
     @Override
     public void deleteUser(long id) {
-        sessionFactory.getCurrentSession().delete(getUser(id));
+        em.remove(getUser(id));
     }
 
+    @Transactional(readOnly = true)
     @Override
-    @SuppressWarnings("unchecked")
     public List<User> getAllUsers() {
-        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("from User");
-        return query.getResultList();
+        return em.createQuery("select u from User u", User.class).getResultList();
     }
 }

@@ -2,7 +2,6 @@ package CRUD.controller;
 
 import CRUD.UserService.UserService;
 import CRUD.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,11 +12,11 @@ import java.util.List;
 @Controller
 @RequestMapping("/")
 public class UserController {
-    @Autowired
-    @Qualifier("userService")
-    private UserService userService;
-//    @Autowired
-//    private List<User> list;
+    private final UserService userService;
+
+    public UserController(@Qualifier("userService") UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
     public String startPage() {
@@ -52,7 +51,7 @@ public class UserController {
 
 
     @GetMapping("/addUser")
-    public String addUserForm(User user) {
+    public String addUserForm() {
         return "addUser";
     }
 

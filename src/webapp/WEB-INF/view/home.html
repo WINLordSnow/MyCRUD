@@ -2,9 +2,15 @@
 <html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
     <title>Home</title>
 </head>
 <body>
-Привет всем
+<input id="showUser" type="button" value="All users">
+<script>
+    $('#showUser').click(function () {
+        $(location).attr("href", "/users")
+    })
+</script>
 </body>
 </html>
