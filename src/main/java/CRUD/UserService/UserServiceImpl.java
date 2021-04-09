@@ -1,11 +1,13 @@
 package CRUD.UserService;
 
 import CRUD.Dao.UserDao;
+import CRUD.model.Role;
 import CRUD.model.User;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -38,5 +40,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers() {
         return userDao.getAllUsers();
+    }
+
+    @Override
+    public Set<Role> getAllRoles() {
+        return userDao.getAllRoles();
     }
 }

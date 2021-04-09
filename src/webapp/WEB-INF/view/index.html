@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:th1="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Users</title>
     <meta charset="UTF-8">
@@ -13,15 +13,27 @@
             <thead>
             <tr>
                 <th>Id</th>
+                <th>Login</th>
+                <th>Password</th>
                 <th>Name</th>
                 <th>Last Name</th>
+                <th>Roles</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="user : ${users}">
                 <td th:text="${user.getId()}"></td>
+                <td th:text="${user.login}"></td>
+                <td th:text="${user.password}"></td>
                 <td th:text="${user.getName()}"></td>
                 <td th:text="${user.getLastName()}"></td>
+                <td>
+                    <ul>
+                        <li th:each="role : ${user.getRoles()}">
+                            <input type="checkbox" name="sel_roles" th:value="${role}" th:text="${role}"/>
+                        </li>
+                    </ul>
+                </td>
                 <td><a th:href="@{updateUser/{id}(id=${user.getId()})}">Edit</a></td>
                 <td><a th:href="@{deleteUser/{id}(id=${user.getId()})}">Delete</a></td>
             </tr>

@@ -32,7 +32,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>5.3.4</version>
+            <version>5.2.0.RELEASE</version>
         </dependency>
 
         <dependency>
@@ -66,10 +66,17 @@
             <version>4.0.0</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>MyCRUD</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>5.4.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>5.4.5</version>
         </dependency>
 
     </dependencies>
@@ -81,7 +88,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-war-plugin</artifactId>
-                    <version>2.4</version>
+                    <version>3.2.2</version>
                     <configuration>
                         <warSourceDirectory>src/webapp</warSourceDirectory>
                         <warName>MyCRUD</warName>

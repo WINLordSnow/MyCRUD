@@ -1,6 +1,7 @@
 package CRUD.controller;
 
 import CRUD.UserService.UserService;
+import CRUD.model.Role;
 import CRUD.model.User;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -8,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/")
@@ -18,6 +20,11 @@ public class UserController {
         this.userService = userService;
     }
 
+    @RequestMapping(value = "login", method = RequestMethod.GET)
+    public String loginPage() {
+        return "login";
+    }
+
     @GetMapping
     public String startPage() {
         return "home";
@@ -26,12 +33,14 @@ public class UserController {
     @GetMapping("/users")
     public String listUsers(ModelMap model) {
         List<User> list = userService.getAllUsers();
+        Set<Role> roles = userService.getAllRoles();
         model.addAttribute("users", list);
+        model.addAttribute("roles", roles);
         return "index";
     }
 
     @GetMapping("/updateUser/{id}")
-    public String updateUserForm(@PathVariable("id")long id, ModelMap model) {
+    public String updateUserForm(@PathVariable("id") long id, ModelMap model) {
         User user = userService.getUser(id);
         model.addAttribute("user", user);
         return "updateUser";
@@ -51,12 +60,13 @@ public class UserController {
 
 
     @GetMapping("/addUser")
-    public String addUserForm() {
+    public String addUserForm(User user) {
         return "addUser";
     }
 
     @PostMapping("/addUser")
-    public String addUser(User user) {
+    public String addUser(@ModelAttribute User user) {
+        user.addRole(new Role("USER"));
         userService.setUser(user);
         return "redirect:/users";
     }

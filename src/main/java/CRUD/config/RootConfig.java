@@ -58,24 +58,25 @@ public class RootConfig extends WebMvcConfigurationSupport {
     @Bean(name = "emf")
     LocalContainerEntityManagerFactoryBean getEntityManager() {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
+        emf.setPackagesToScan("CRUD.model");
         emf.setDataSource(getDataSource());
         emf.setJpaVendorAdapter(getJpaVendorAdapter());
         return emf;
     }
 
-    @Bean
-    LocalSessionFactoryBean getSessionFactory() {
-        LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
-        factoryBean.setDataSource(getDataSource());
-
-        Properties properties = new Properties();
-        properties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
-        properties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
-
-        factoryBean.setHibernateProperties(properties);
-        factoryBean.setAnnotatedClasses(User.class);
-        return factoryBean;
-    }
+//    @Bean
+//    LocalSessionFactoryBean getSessionFactory() {
+//        LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
+//        factoryBean.setDataSource(getDataSource());
+//
+//        Properties properties = new Properties();
+//        properties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
+//        properties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+//
+//        factoryBean.setHibernateProperties(properties);
+//        factoryBean.setAnnotatedClasses(User.class);
+//        return factoryBean;
+//    }
 
     @Bean
     JpaTransactionManager getTransactionManager() {
