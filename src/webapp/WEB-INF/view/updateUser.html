@@ -5,6 +5,7 @@
     <title>Update user</title>
 </head>
 <body>
+<div th:replace="header :: content"></div>
 <form action="#" th:action="@{/updateUser}" th:object="${user}" method="post">
     <label for="id">ID</label>
     <input readonly type="number" th:field="*{id}" id="id" placeholder="ID">
@@ -21,19 +22,12 @@
     <label for="lastName">Last name</label>
     <input type="text" th:field="*{lastName}" id="lastName" placeholder="Last Name">
     <br/>
-
     <th:block th:each="role : ${allRoles}">
         <input type="checkbox" th:field="*{roles}"
-               th:value="${role.id}"
+               th:value="${role.name}"
                th:text="${role.name}"/>
     </th:block>
-    <td>
-        <ul>
-            <li th:each="role : ${allRoles}">
-                <input type="checkbox" name="sel_roles" th:text="${role.getName()}"/>
-            </li>
-        </ul>
-    </td>
+
     <br/>
     <input type="submit" value="Update user">
 </form>

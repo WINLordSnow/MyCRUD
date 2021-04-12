@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
 </head>
 <body>
+<div th:replace="header :: content"></div>
 <div th:switch="${users}">
     <h2 th:case="null">No users found!!!</h2>
     <div th:case="*">

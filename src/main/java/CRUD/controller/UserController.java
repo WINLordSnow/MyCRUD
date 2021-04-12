@@ -32,14 +32,13 @@ public class UserController {
 
     @GetMapping
     public String startPage() {
-        return "home";
+        return "header";
     }
 
     @GetMapping("/admin")
     public String listUsers(ModelMap model) {
         List<User> list = userService.getAllUsers();
         Set<Role> roles = userService.getAllRoles();
-        System.out.println(list.size());
         model.addAttribute("users", list);
         model.addAttribute("roles", roles);
         return "admin";
@@ -55,9 +54,9 @@ public class UserController {
 
     @PostMapping("/updateUser")
     public String updateUser(User user) {
-//        Set<Role> temp = new HashSet<>();
-//        user.getRoles().stream().forEach(role -> temp.add(userService.getRoleByName(role.getName())));
-//        user.setRoles(temp);
+        Set<Role> temp = new HashSet<>();
+        user.getRoles().forEach(role -> temp.add(userService.getRoleByName(role.getName())));
+        user.setRoles(temp);
         userService.updateUser(user);
         return "redirect:/admin";
     }
@@ -70,32 +69,26 @@ public class UserController {
 
     @RolesAllowed(value = "ROLE_ADMIN")
     @GetMapping("/addUser")
-    public String addUserForm(User user) {
+    public String addUserForm(@ModelAttribute User user, ModelMap model) {
+        model.addAttribute("allRoles", allRoles);
         return "addUser";
     }
 
     @RolesAllowed(value = "ROLE_ADMIN")
     @PostMapping("/addUser")
-    public String addUser(@ModelAttribute User user) {
-        user.addRole(userService.getRoleByName("USER"));
+    public String addUser(User user) {
+        Set<Role> temp = new HashSet<>();
+        allRoles.stream().filter(role -> user.getRoles().contains(new Role(role.getName()))).forEach(temp::add);
+        user.setRoles(temp);
         userService.setUser(user);
         return "redirect:/admin";
     }
 
     @GetMapping("/user")
     public String showUser(Principal user, ModelMap modelMap) {
-        System.out.println(user.getName());
         User userBd = userService.getUserByLogin(user.getName());
-        System.out.println(userBd);
         modelMap.addAttribute("user", userBd);
         return "/user";
     }
 
-//    @GetMapping("/user")
-//    public String showUser(@AuthenticationPrincipal String login, ModelMap modelMap) {
-//        User userBd = userService.getUserByLogin(login);
-//        System.out.println(userBd);
-//        modelMap.addAttribute("user", userBd);
-//        return "/user";
-//    }
 }

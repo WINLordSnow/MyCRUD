@@ -5,6 +5,7 @@
     <title>Add user</title>
 </head>
 <body>
+<div th:replace="header :: content"></div>
 <form action="#" th:action="@{/addUser}" th:object="${user}" method="post">
     <label>Login</label>
     <input type="text" th:field="*{login}" placeholder="Login">
@@ -14,7 +15,12 @@
     <input type="text" th:field="*{name}" placeholder="Name">
     <label>Last name</label>
     <input type="text" th:field="*{lastName}" placeholder="Last Name">
-
+    <br/>
+    <th:block th:each="role : ${allRoles}">
+        <input type="checkbox" th:field="*{roles}"
+               th:value="${role.name}"
+               th:text="${role.name}"/>
+    </th:block>
 
     <input type="submit" value="Add user">
 </form>
