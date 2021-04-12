@@ -2,8 +2,6 @@ package CRUD.Dao;
 
 import CRUD.model.Role;
 import CRUD.model.User;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,10 +28,18 @@ public class UserDaoImpl implements UserDao {
 
     @Transactional(readOnly = true)
     @Override
-    public User getUser(long id) {
-        TypedQuery<User> query = em.createQuery("select u from User u where u.id = :id", User.class);
+    public Optional<User> getUser(long id) {
+        TypedQuery<User> query = em.createQuery("select u from User u join fetch u.roles where u.id = :id", User.class);
         query.setParameter("id", id);
-        return query.getSingleResult();
+        return query.getResultStream().findFirst();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<User> getUserByLogin(String login) {
+        TypedQuery<User> query = em.createQuery("select u from User u join fetch u.roles where u.login = :login", User.class);
+        query.setParameter("login", login);
+        return query.getResultStream().findFirst();
     }
 
     @Override
@@ -42,7 +49,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void deleteUser(long id) {
-        em.remove(getUser(id));
+        em.remove(getUser(id).get());
     }
 
     @Transactional(readOnly = true)
@@ -55,5 +62,12 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Set<Role> getAllRoles() {
         return em.createQuery("select r from Role r", Role.class).getResultStream().collect(Collectors.toSet());
+    }
+
+    @Override
+    public Role getRoleByName(String name) {
+        TypedQuery<Role> query = em.createQuery("select r from Role r where r.name = :name", Role.class);
+        query.setParameter("name", name);
+        return query.getSingleResult();
     }
 }

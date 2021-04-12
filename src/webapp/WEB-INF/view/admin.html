@@ -30,7 +30,7 @@
                 <td>
                     <ul>
                         <li th:each="role : ${user.getRoles()}">
-                            <input type="checkbox" name="sel_roles" th:value="${role}" th:text="${role}"/>
+                            <input type="checkbox" name="sel_roles"  th:text="${role.getName()}"/>
                         </li>
                     </ul>
                 </td>

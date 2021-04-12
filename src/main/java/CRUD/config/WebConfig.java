@@ -1,5 +1,7 @@
 package CRUD.config;
 
+import CRUD.UserService.UserService;
+import CRUD.model.Role;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,16 +14,26 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
+import java.util.Set;
+
 @Configuration
 @EnableWebMvc
 @ComponentScan(value = "CRUD", basePackageClasses = RootConfig.class, useDefaultFilters = false, includeFilters = {@ ComponentScan.Filter (Controller.class)})
 public class WebConfig implements WebMvcConfigurer {
 
     private final ApplicationContext applicationContext;
+    private final UserService userService;
 
-    public WebConfig(ApplicationContext applicationContext) {
+    public WebConfig(ApplicationContext applicationContext, UserService userService) {
         this.applicationContext = applicationContext;
+        this.userService = userService;
     }
+
+    @Bean
+    Set<Role> allRoles() {
+        return userService.getAllRoles();
+    }
+
 
     @Bean
     public SpringResourceTemplateResolver templateResolver(){

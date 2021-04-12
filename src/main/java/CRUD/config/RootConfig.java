@@ -1,11 +1,12 @@
 package CRUD.config;
 
 import CRUD.UserService.UserService;
+import CRUD.model.Role;
 import CRUD.model.User;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -14,10 +15,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 import javax.sql.DataSource;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Objects;
-import java.util.Properties;
+import java.util.Set;
 
 @Configuration
 @EnableTransactionManagement
@@ -26,16 +26,16 @@ import java.util.Properties;
 public class RootConfig extends WebMvcConfigurationSupport {
     private final Environment env;
 
-    public RootConfig(@NotNull Environment env) {
+    public RootConfig(Environment env) {
         this.env = env;
     }
 
 
-    @Bean
-    @Scope("prototype")
-    List<User> workUsers(UserService userService) {
-        return userService.getAllUsers();
-    }
+//    @Bean
+//    @Scope("prototype")
+//    List<User> workUsers(UserService userService) {
+//        return userService.getAllUsers();
+//    }
 
     @Bean
     DataSource getDataSource() {

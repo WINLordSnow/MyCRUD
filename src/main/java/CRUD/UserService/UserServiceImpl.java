@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service("userService")
@@ -24,7 +25,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(long id) {
-        return userDao.getUser(id);
+        return userDao.getUser(id).orElse(null);
     }
 
     @Override
@@ -45,5 +46,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public Set<Role> getAllRoles() {
         return userDao.getAllRoles();
+    }
+
+    @Override
+    public Role getRoleByName(String name) {
+        return userDao.getRoleByName(name);
+    }
+
+    @Override
+    public User getUserByLogin(String login) {
+        return userDao.getUserByLogin(login).orElse(null);
     }
 }
