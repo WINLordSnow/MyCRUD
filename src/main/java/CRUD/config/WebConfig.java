@@ -31,6 +31,11 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     Set<Role> allRoles() {
+        Set<Role> temp = userService.getAllRoles();
+        if (temp.isEmpty()) {
+            userService.setRole(new Role("USER"));
+            userService.setRole(new Role("ADMIN"));
+        }
         return userService.getAllRoles();
     }
 

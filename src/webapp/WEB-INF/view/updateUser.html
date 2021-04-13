@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Update user</title>
@@ -23,9 +23,11 @@
     <input type="text" th:field="*{lastName}" id="lastName" placeholder="Last Name">
     <br/>
     <th:block th:each="role : ${allRoles}">
-        <input type="checkbox" th:field="*{roles}"
-               th:value="${role.name}"
-               th:text="${role.name}"/>
+        <label>
+            <input type="checkbox" th:field="*{roles}"
+                   th:value="${role.name}"
+                   th:text="${role.name}"/>
+        </label>
     </th:block>
 
     <br/>

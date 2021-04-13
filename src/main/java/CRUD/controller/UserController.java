@@ -78,6 +78,9 @@ public class UserController {
     @PostMapping("/addUser")
     public String addUser(User user) {
         Set<Role> temp = new HashSet<>();
+        if (user.getRoles().isEmpty()) {
+            user.addRole(new Role("USER"));
+        }
         allRoles.stream().filter(role -> user.getRoles().contains(new Role(role.getName()))).forEach(temp::add);
         user.setRoles(temp);
         userService.setUser(user);

@@ -21,25 +21,31 @@ public class UserDaoImpl implements UserDao {
     @PersistenceContext
     private EntityManager em;
 
+
     @Override
     public void setUser(User user) {
         em.persist(user);
     }
 
+    @Override
+    public void setRole(Role role) {
+        em.persist(role);
+    }
+
     @Transactional(readOnly = true)
     @Override
     public Optional<User> getUser(long id) {
-        TypedQuery<User> query = em.createQuery("select u from User u join fetch u.roles where u.id = :id", User.class);
+        TypedQuery<User> query = em.createQuery("select u from User u where u.id = :id", User.class);
         query.setParameter("id", id);
-        return query.getResultStream().findFirst();
+        return query.getResultList().stream().findFirst();
     }
 
     @Transactional(readOnly = true)
     @Override
     public Optional<User> getUserByLogin(String login) {
-        TypedQuery<User> query = em.createQuery("select u from User u join fetch u.roles where u.login = :login", User.class);
+        TypedQuery<User> query = em.createQuery("select u from User u where u.login = :login", User.class);
         query.setParameter("login", login);
-        return query.getResultStream().findFirst();
+        return query.getResultList().stream().findFirst();
     }
 
     @Override
@@ -49,7 +55,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void deleteUser(long id) {
-        em.remove(getUser(id).get());
+        em.remove(getUser(id).orElse(null));
     }
 
     @Transactional(readOnly = true)

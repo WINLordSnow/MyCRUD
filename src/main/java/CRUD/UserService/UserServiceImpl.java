@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service("userService")
@@ -21,6 +20,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void setUser(User user) {
         userDao.setUser(user);
+    }
+
+    @Override
+    public void setRole(Role role) {
+        userDao.setRole(role);
     }
 
     @Override

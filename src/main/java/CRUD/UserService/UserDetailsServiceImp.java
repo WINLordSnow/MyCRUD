@@ -9,11 +9,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
-
 @Service
 public class UserDetailsServiceImp implements UserDetailsService {
-    private UserDao userDao;
+    private final UserDao userDao;
 
     public UserDetailsServiceImp(UserDao userDao) {
         this.userDao = userDao;
@@ -23,7 +21,6 @@ public class UserDetailsServiceImp implements UserDetailsService {
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         if (login.equals("ADMIN")) {
             User user = new User("ADMIN", "ADMIN", "adm", "adm");
-            System.out.println(user.getRoles().isEmpty());
             user.addRole(new Role(2L, "ADMIN"));
             return user;
         }
